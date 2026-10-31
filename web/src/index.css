@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+  body {
+    @apply bg-white text-slate-900 antialiased;
+    font-family:
+      ui-sans-serif,
+      system-ui,
+      -apple-system,
+      "Segoe UI",
+      Roboto,
+      sans-serif;
+  }
+  .dark body {
+    @apply bg-slate-950 text-slate-100;
+  }
+}
+
+/* Leaflet's own CSS still has to load globally; imported in main.tsx */
+.leaflet-container {
+  background: transparent;
+  font-family: inherit;
+}
+
+/* Dark map: OSM only ships light tiles, so invert them (hue-rotate keeps water blue-ish). */
+.map-tiles-dark {
+  filter: invert(1) hue-rotate(180deg) brightness(0.95) contrast(0.9);
+}
+
+@layer components {
+  .input {
+    @apply w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm
+           focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500
+           dark:border-slate-700 dark:bg-slate-950;
+  }
+}

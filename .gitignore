@@ -1,0 +1,73 @@
+# ===== Node / NPM =====
+node_modules/
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+
+# ===== Environment =====
+.env
+.env.*
+!.env.example
+
+# ===== Build output =====
+dist/
+.kotlin/
+
+# ===== TypeScript =====
+*.tsbuildinfo
+
+# ===== Keys & Certs =====
+*.jks
+*.p8
+*.p12
+*.key
+*.keystore
+*.pem
+
+# ===== OS =====
+.DS_Store
+Thumbs.db
+
+# ===== IDE =====
+.vscode/
+.idea/
+
+# ===== Backend build =====
+/backend/dist/
+/backend/generated/
+
+# ===== Drizzle generated (keep migrations, ignore snapshots) =====
+/backend/drizzle/meta/*.json
+
+# ===== Deploy — ignore backup contents but keep the directory =====
+/deploy/backups/*
+!/deploy/backups/.gitkeep
+/deploy/.env
+
+# ===== Public-release hygiene =====
+build/
+.gradle/
+local.properties
+*.apk
+*.aab
+*.dex
+*.log
+__pycache__/
+*.pyc
+*.dump
+*.sqlite
+*.db
+backend-dotnet/bin/
+backend-dotnet/obj/
+# Local data dump only; the Data/ folder also holds source code
+backend-dotnet/Data/*.json
+.agent/
+.claude/
+.qodo/
+google-services.json
+GoogleService-Info.plist
+captures/
+
+# Keep the Gradle wrapper so CI can run ./gradlew
+!gradle-wrapper.jar
+!gradle-wrapper.properties

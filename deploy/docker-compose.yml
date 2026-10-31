@@ -1,0 +1,91 @@
+name: atomik
+
+# ─── Isolated bridge network — does not share with honcho/immich/etc. ─────────
+networks:
+  atomik_net:
+
+# ─── Named volume for Postgres data ────────────────────────────────────────────
+volumes:
+  atomik_pgdata:
+
+services:
+
+  # ─── Database ────────────────────────────────────────────────────────────────
+  db:
+    image: postgis/postgis:15-3.3
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER:     ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+      POSTGRES_DB:       ${POSTGRES_DB:-location_history}
+    volumes:
+      - atomik_pgdata:/var/lib/postgresql/data
+    # Postgres is intentionally NOT exposed to the host — it is only reachable
+    # from within atomik_net.  Port 5432 on the host is already taken by honcho.
+    networks: [atomik_net]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  # ─── .NET API (backend-dotnet) ───────────────────────────────────────────────
+  api:
+    build:
+      context: ../backend-dotnet
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    environment:
+      # ASP.NET Core nested config override (double-underscore = ':' separator)
+      ConnectionStrings__Postgres: >-
+        Host=db;Port=5432;
+        Database=${POSTGRES_DB:-location_history};
+        Username=${POSTGRES_USER:-postgres};
+        Password=${POSTGRES_PASSWORD}
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "3000:3000"    # reachable from the mobile app + LAN
+    networks: [atomik_net]
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:3000/api/ping || exit 1"]
+      interval: 20s
+      timeout: 5s
+      retries: 6
+      start_period: 30s
+
+  # ─── Web dashboard (Vite SPA + nginx reverse proxy) ──────────────────────────
+  web:
+    build:
+      context: ../web
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    depends_on:
+      api:
+        condition: service_healthy
+    ports:
+      - "8090:8080"    # browser access: http://<server-ip>:8090
+    networks: [atomik_net]
+
+  # ─── Automated database backup ───────────────────────────────────────────────
+  db-backup:
+    image: prodrigestivill/postgres-backup-local:15
+    restart: unless-stopped
+    environment:
+      POSTGRES_HOST:      db
+      POSTGRES_DB:        ${POSTGRES_DB:-location_history}
+      POSTGRES_USER:      ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD:  ${POSTGRES_PASSWORD}
+      SCHEDULE:           "@daily"
+      BACKUP_KEEP_DAYS:   7
+      BACKUP_KEEP_WEEKS:  4
+      BACKUP_KEEP_MONTHS: 6
+      BACKUP_DIR:         /backups
+      HEALTHCHECK_PORT:   8080
+    volumes:
+      - ./backups:/backups   # host-mounted so you can rsync off-box
+    depends_on:
+      db:
+        condition: service_healthy
+    networks: [atomik_net]

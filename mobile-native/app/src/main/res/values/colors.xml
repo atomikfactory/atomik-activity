@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="background">#121212</color>
+    <color name="accent">#007BFF</color>
+    <!-- Adaptive icon background — referenced by mipmap-anydpi-v26/ic_launcher.xml -->
+    <color name="iconBackground">#121212</color>
+    <color name="colorPrimary">#007BFF</color>
+    <color name="colorPrimaryDark">#121212</color>
+</resources>
