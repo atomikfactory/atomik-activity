@@ -24,11 +24,15 @@ android {
         // The app's signing key (originally the Expo build's debug keystore). Keep a
         // backup: installing an APK signed with a different key over an existing
         // install fails, forcing an uninstall that wipes unsynced points.
-        getByName("debug") {
-            storeFile = file("debug.keystore")
-            storePassword = "android"
-            keyAlias = "androiddebugkey"
-            keyPassword = "android"
+        // The keystore is not committed; without it (e.g. CI) AGP's default debug key is used.
+        val appKeystore = file("debug.keystore")
+        if (appKeystore.exists()) {
+            getByName("debug") {
+                storeFile = appKeystore
+                storePassword = "android"
+                keyAlias = "androiddebugkey"
+                keyPassword = "android"
+            }
         }
     }
 
