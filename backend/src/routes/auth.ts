@@ -13,6 +13,13 @@ const authBody = {
     },
 };
 
+const errorBody = {
+    type: 'object',
+    properties: {
+        error: { type: 'string' },
+    },
+} as const;
+
 const authResponse = {
     200: {
         type: 'object',
@@ -27,6 +34,8 @@ const authResponse = {
             },
         },
     },
+    400: errorBody,
+    401: errorBody,
 };
 
 const authRoutes: FastifyPluginAsync = async (fastify) => {
