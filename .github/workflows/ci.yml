@@ -28,11 +28,7 @@ jobs:
           cache: npm
           cache-dependency-path: backend/package-lock.json
       - run: npm ci
-      # backend/package.json has no typecheck/lint/build/test scripts (its "test" is a placeholder),
-      # so type-check with tsc directly. Known pre-existing type errors: report-only for now.
-      - name: Typecheck (report-only)
-        continue-on-error: true
-        run: npx tsc --noEmit
+      - run: npm run typecheck
 
   web:
     name: web (Vite/React)
@@ -48,10 +44,7 @@ jobs:
           cache: npm
           cache-dependency-path: web/package-lock.json
       - run: npm ci
-      # Known pre-existing react-hooks lint errors: report-only for now.
-      - name: Lint (report-only)
-        continue-on-error: true
-        run: npm run lint
+      - run: npm run lint
       - run: npm run build
 
   backend-dotnet:
