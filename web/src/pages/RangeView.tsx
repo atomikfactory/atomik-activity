@@ -44,7 +44,7 @@ export function RangeView() {
             value={from}
             max={to}
             onChange={(e) => setFrom(e.target.value)}
-            className="bg-transparent px-2 py-1 text-sm focus:outline-none"
+            className="bg-transparent px-2 py-1 text-sm focus:outline-hidden"
           />
           <span className="text-slate-400">→</span>
           <input
@@ -53,7 +53,7 @@ export function RangeView() {
             min={from}
             max={todayIso()}
             onChange={(e) => setTo(e.target.value)}
-            className="bg-transparent px-2 py-1 text-sm focus:outline-none"
+            className="bg-transparent px-2 py-1 text-sm focus:outline-hidden"
           />
           <div className="mx-1 h-5 w-px bg-slate-200 dark:bg-slate-700" />
           {presets.map((p) => (
@@ -75,7 +75,7 @@ export function RangeView() {
       <SummaryCards stats={stats} />
 
       <div className="grid gap-4 lg:grid-cols-[1fr_420px]">
-        <div className="h-[60vh] min-h-[400px] overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
+        <div className="h-[60vh] min-h-[400px] overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xs dark:border-slate-800 dark:bg-slate-900">
           {range.isError ? (
             <div className="flex h-full items-center justify-center text-sm text-rose-500">
               Failed to load points.
@@ -91,7 +91,7 @@ export function RangeView() {
             />
           )}
         </div>
-        <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+        <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-xs dark:border-slate-800 dark:bg-slate-900">
           <div className="mb-2 text-sm font-semibold">Distance per day</div>
           <DistancePerDayChart data={daily} />
         </div>

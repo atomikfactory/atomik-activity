@@ -120,7 +120,7 @@ export function Dashboard() {
                     value={date}
                     max={todayIso()}
                     onChange={(e) => changeDate(e.target.value)}
-                    className="bg-transparent text-sm focus:outline-none"
+                    className="bg-transparent text-sm focus:outline-hidden"
                   />
                 </div>
                 <Button
@@ -147,7 +147,7 @@ export function Dashboard() {
       <SummaryCards stats={stats} steps={dailySteps.data?.steps ?? null} />
 
       <div className="grid gap-4 lg:grid-cols-[1fr_320px]">
-        <div className="h-[60vh] min-h-[400px] overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
+        <div className="h-[60vh] min-h-[400px] overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xs dark:border-slate-800 dark:bg-slate-900">
           {daily.isError ? (
             <div className="flex h-full items-center justify-center text-sm text-rose-500">
               Failed to load points.

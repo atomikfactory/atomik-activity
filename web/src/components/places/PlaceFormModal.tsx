@@ -104,7 +104,7 @@ function PlaceForm({
 
   return (
     <div
-      className="fixed inset-0 z-[9999] flex items-center justify-center bg-slate-950/40 p-4 backdrop-blur-sm"
+      className="fixed inset-0 z-9999 flex items-center justify-center bg-slate-950/40 p-4 backdrop-blur-xs"
       onClick={onClose}
     >
       <div
@@ -116,7 +116,7 @@ function PlaceForm({
             {editing ? "Edit place" : "Add place"}
           </h2>
           <button
-            className="rounded p-1 text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800"
+            className="rounded-sm p-1 text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800"
             onClick={onClose}
             aria-label="Close"
           >

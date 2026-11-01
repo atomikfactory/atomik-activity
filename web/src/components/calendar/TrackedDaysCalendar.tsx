@@ -47,7 +47,7 @@ export function TrackedDaysCalendar({ selected, onSelect }: Props) {
   );
 
   return (
-    <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+    <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-xs dark:border-slate-800 dark:bg-slate-900">
       <div className="mb-3 flex items-center justify-between">
         <div className="text-sm font-semibold">{monthLabel}</div>
         <div className="flex gap-1">

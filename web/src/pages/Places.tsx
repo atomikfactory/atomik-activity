@@ -89,7 +89,7 @@ export function Places() {
               value={from}
               max={to}
               onChange={(e) => setFrom(e.target.value)}
-              className="bg-transparent px-2 py-1 text-sm focus:outline-none"
+              className="bg-transparent px-2 py-1 text-sm focus:outline-hidden"
             />
             <span className="text-slate-400">→</span>
             <input
@@ -98,7 +98,7 @@ export function Places() {
               min={from}
               max={todayIso()}
               onChange={(e) => setTo(e.target.value)}
-              className="bg-transparent px-2 py-1 text-sm focus:outline-none"
+              className="bg-transparent px-2 py-1 text-sm focus:outline-hidden"
             />
             <div className="mx-1 h-5 w-px bg-slate-200 dark:bg-slate-700" />
             {presets.map((p) => (
@@ -124,7 +124,7 @@ export function Places() {
 
       <div className="grid gap-4 lg:grid-cols-[1fr_380px]">
         <div className="space-y-4">
-          <div className="h-[55vh] min-h-[380px] overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
+          <div className="h-[55vh] min-h-[380px] overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xs dark:border-slate-800 dark:bg-slate-900">
             <PlacesMap
               places={places.data ?? []}
               onAddAt={(lat, lng) => openCreate({ latitude: lat, longitude: lng })}

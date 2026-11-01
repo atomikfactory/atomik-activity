@@ -33,7 +33,7 @@ export function Settings() {
             value={apiUrl}
             onChange={(e) => setApiUrl(e.target.value)}
             placeholder="/api or http://localhost:3000/api"
-            className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:border-slate-700 dark:bg-slate-950"
+            className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:border-brand-500 focus:outline-hidden focus:ring-1 focus:ring-brand-500 dark:border-slate-700 dark:bg-slate-950"
           />
           <p className="text-xs text-slate-500 dark:text-slate-400">
             In dev, leave as <code>/api</code> — Vite proxies to the .NET API on

@@ -78,7 +78,7 @@ export function PlacesList({ places, stats, isLoading, onEdit }: Props) {
                     </div>
                     <button
                       onClick={() => onEdit(p)}
-                      className="rounded p-1.5 text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800"
+                      className="rounded-sm p-1.5 text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800"
                       aria-label={`Edit ${p.name}`}
                     >
                       <Pencil className="h-3.5 w-3.5" />
