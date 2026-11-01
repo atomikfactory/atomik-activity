@@ -13,10 +13,15 @@ dotenv.config();
 const fastify = Fastify({ logger: true });
 
 async function build() {
+    const jwtSecret = process.env.JWT_SECRET;
+    if (!jwtSecret) {
+        throw new Error('JWT_SECRET environment variable is required but not set. Set it in the environment or in backend/.env (see backend/.env.example).');
+    }
+
     await fastify.register(cors, { origin: '*' });
 
     await fastify.register(jwt, {
-        secret: process.env.JWT_SECRET || 'super-secret',
+        secret: jwtSecret,
     });
 
     // Swagger spec
