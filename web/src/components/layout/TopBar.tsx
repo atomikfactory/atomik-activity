@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Moon, RefreshCw, Sun } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { Button } from "../ui/Button";
@@ -14,6 +15,13 @@ export function TopBar() {
   const health = useHealth();
   const latest = useLatest();
 
+  // Keep "now" in state (updated on a timer) so render stays pure.
+  const [now, setNow] = useState(() => Date.now());
+  useEffect(() => {
+    const id = setInterval(() => setNow(Date.now()), 60_000);
+    return () => clearInterval(id);
+  }, []);
+
   const apiTone = health.isError ? "red" : health.data ? "green" : "amber";
   const apiLabel = health.isError
     ? "API offline"
@@ -27,7 +35,7 @@ export function TopBar() {
   };
   if (latest.data?.hasData && latest.data.latest) {
     const when = parseServerTimestamp(latest.data.latest.timestamp);
-    const minutes = (Date.now() - when.getTime()) / 60_000;
+    const minutes = (now - when.getTime()) / 60_000;
     const tone = minutes < 60 ? "green" : minutes < 60 * 24 ? "amber" : "red";
     syncPill = { tone, text: `Synced ${formatRelative(when)}` };
   }

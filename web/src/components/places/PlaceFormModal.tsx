@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { X } from "lucide-react";
 import { Button } from "../ui/Button";
 import { CATEGORY_OPTIONS } from "../../lib/categories";
@@ -24,35 +24,47 @@ interface Props {
   };
 }
 
-export function PlaceFormModal({ open, onClose, editing, initial }: Props) {
-  const [name, setName] = useState("");
-  const [category, setCategory] = useState<string>("other");
-  const [lat, setLat] = useState<string>("");
-  const [lng, setLng] = useState<string>("");
-  const [radius, setRadius] = useState<string>("75");
+export function PlaceFormModal({ open, ...rest }: Props) {
+  // The form is mounted only while open, so its state is initialised from the
+  // props each time the modal opens (or a different place is edited).
+  if (!open) return null;
+  return <PlaceForm key={rest.editing?.id ?? "new"} {...rest} />;
+}
+
+function PlaceForm({
+  onClose,
+  editing,
+  initial,
+}: Omit<Props, "open">) {
+  const [name, setName] = useState(() => editing?.name ?? initial?.name ?? "");
+  const [category, setCategory] = useState<string>(
+    () => (editing ? editing.category : initial?.category) ?? "other",
+  );
+  const [lat, setLat] = useState<string>(() =>
+    editing
+      ? String(editing.latitude)
+      : initial?.latitude !== undefined
+        ? String(initial.latitude)
+        : "",
+  );
+  const [lng, setLng] = useState<string>(() =>
+    editing
+      ? String(editing.longitude)
+      : initial?.longitude !== undefined
+        ? String(initial.longitude)
+        : "",
+  );
+  const [radius, setRadius] = useState<string>(() =>
+    editing
+      ? String(editing.radiusM)
+      : initial?.radiusM !== undefined
+        ? String(initial.radiusM)
+        : "75",
+  );
 
   const create = useCreatePlace();
   const update = useUpdatePlace();
   const del = useDeletePlace();
-
-  useEffect(() => {
-    if (!open) return;
-    if (editing) {
-      setName(editing.name);
-      setCategory(editing.category ?? "other");
-      setLat(String(editing.latitude));
-      setLng(String(editing.longitude));
-      setRadius(String(editing.radiusM));
-    } else {
-      setName(initial?.name ?? "");
-      setCategory(initial?.category ?? "other");
-      setLat(initial?.latitude !== undefined ? String(initial.latitude) : "");
-      setLng(initial?.longitude !== undefined ? String(initial.longitude) : "");
-      setRadius(initial?.radiusM !== undefined ? String(initial.radiusM) : "75");
-    }
-  }, [open, editing, initial]);
-
-  if (!open) return null;
 
   const latNum = parseFloat(lat);
   const lngNum = parseFloat(lng);
